@@ -1,0 +1,5 @@
+{
+  "listenPort" : 8000,
+  "hostAddr" : "192.168.1.1:8000",
+  "movDir" : "/mnt/data"
+}
