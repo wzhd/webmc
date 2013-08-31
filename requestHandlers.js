@@ -32,9 +32,8 @@ function play(request, response) {
   var query = querystring.parse(qrystr);
   console.log("Request handler 'play' was called.");
   for (item in query){
-    console.log("Query: " + item + ": " +  query[item]);
     omxcontrol.start(config.movDir + "/" + query[item]);
-    console.log("playing " + query[item]);
+    console.log("playing " + config.movDir + "/" + query[item]);
   }
   response.writeHead(200, {"Content-Type": "text/html"});
   response.write("playing");
