@@ -1,10 +1,9 @@
-var server = require("./server");
-var router = require("./router");
 var requestHandlers = require("./requestHandlers");
+var express = require("express");
+var config = require("./config.json");
 
-var handle = {};
-handle["/"] = requestHandlers.start;
-handle["/start"] = requestHandlers.start;
-handle["/play"] = requestHandlers.play;
-
-server.start(router.route,handle);
+app = express();
+app.get('/',requestHandlers.start);
+app.get('/play',requestHandlers.play);
+app.listen(config.listenPort);
+console.log("Server has started.");
