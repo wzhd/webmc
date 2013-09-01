@@ -5,7 +5,6 @@ var config = require("./config.json");
 var url = require("url");
 
 function start(request, response) {
-  console.log("Request handler 'start' was called.");
   fs.readdir(config.movDir,function(err, files){
     if(err){
       response.writeHead(500,{ "Content-Type":"text/plain"});
@@ -30,10 +29,8 @@ function play(request, response) {
   var pathname = url.parse(request.url).pathname;
   var qrystr = url.parse(request.url).query;
   var query = querystring.parse(qrystr);
-  console.log("Request handler 'play' was called.");
   for (item in query){
     omxcontrol.start(config.movDir + "/" + query[item]);
-    console.log("playing " + config.movDir + "/" + query[item]);
   }
   response.writeHead(200, {"Content-Type": "text/html"});
   response.write("playing");
