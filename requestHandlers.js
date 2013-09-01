@@ -7,20 +7,17 @@ var url = require("url");
 function start(request, response) {
   fs.readdir(config.movDir,function(err, files){
     if(err){
-      response.writeHead(500,{ "Content-Type":"text/plain"});
-      response.write(err + "\n");
-      response.end();
+      response.status(500);
+      response.render('index', { body: err });
     }
     else{
-      response.writeHead(200, {"Content-Type": "text/html"});
-      response.write('<html><head></head><body>');
+      var movList = '';
       for (file in files){
         if(files[file] != 'lost+found'){
-          response.write('<a href="http://' + config.hostAddr + '/play?filename=' + files[file] + '">' + files[file] + '</a>' + '<br>');
+          movList += ('<a href="http://' + config.hostAddr + '/play?filename=' + files[file] + '">' + files[file] + '</a>' + '<br>');
           }
       }
-      response.write('</body><html');
-      response.end();
+      response.render('index', { body: movList });
     }
   });
 }
@@ -29,12 +26,12 @@ function play(request, response) {
   var pathname = url.parse(request.url).pathname;
   var qrystr = url.parse(request.url).query;
   var query = querystring.parse(qrystr);
+  var status = 'Playing:';
   for (item in query){
     omxcontrol.start(config.movDir + "/" + query[item]);
+    status += (config.movDir + "/" + query[item]);
   }
-  response.writeHead(200, {"Content-Type": "text/html"});
-  response.write("playing");
-  response.end();
+  response.render('index', { body: status });
 }
 
 exports.start = start;

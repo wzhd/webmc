@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "omxcontrol": "0.0.1",
-    "express": "3.3.7"
+    "express": "3.3.7",
+    "ejs": "~0.8.4"
   }
 }
