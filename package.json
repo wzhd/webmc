@@ -4,7 +4,7 @@
   "description": "A lightweight media center that works by delivering web pages",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "node app.js"
   },
   "repository": {
     "type": "git",

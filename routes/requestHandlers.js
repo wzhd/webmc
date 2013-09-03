@@ -1,7 +1,7 @@
 var querystring = require("querystring");
 var fs = require("fs");
 var omxcontrol = require("omxcontrol");
-var config = require("./config.json");
+var config = require("../config.json");
 var url = require("url");
 
 function start(request, response) {

@@ -1,4 +1,4 @@
-var requestHandlers = require("./requestHandlers");
+var requestHandlers = require("./routes/requestHandlers");
 var express = require("express");
 var config = require("./config.json");
 var path = require("path");
