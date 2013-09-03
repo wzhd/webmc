@@ -1,8 +1,5 @@
-var querystring = require("querystring");
 var fs = require("fs");
-var omxcontrol = require("omxcontrol");
 var config = require("../config.json");
-var url = require("url");
 
 function start(request, response) {
   fs.readdir(config.movDir,function(err, files){
@@ -22,17 +19,4 @@ function start(request, response) {
   });
 }
 
-function play(request, response) {
-  var pathname = url.parse(request.url).pathname;
-  var qrystr = url.parse(request.url).query;
-  var query = querystring.parse(qrystr);
-  var status = 'Playing:';
-  for (item in query){
-    omxcontrol.start(config.movDir + "/" + query[item]);
-    status += (config.movDir + "/" + query[item]);
-  }
-  response.render('index', { body: status });
-}
-
 exports.start = start;
-exports.play = play;
