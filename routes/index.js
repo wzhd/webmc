@@ -8,13 +8,14 @@ function start(request, response) {
       response.render('index', { body: err });
     }
     else{
-      var movList = '';
+      var htmlBody = '';
       for (file in files){
         if(files[file] != 'lost+found'){
-          movList += ('<a href="http://' + config.hostAddr + '/play?filename=' + files[file] + '">' + files[file] + '</a>' + '<br>');
+          htmlBody += ('<img src="http://' + config.hostAddr + '/thumbnail?filename=' + files[file] +  '"><br>');
+          htmlBody += ('<a href="http://' + config.hostAddr + '/play?filename=' + files[file] + '">' + files[file] + '</a>' + '<br>');
           }
       }
-      response.render('index', { body: movList });
+      response.render('index', { body: htmlBody });
     }
   });
 }
