@@ -9,14 +9,16 @@ function start(request, response) {
       response.render('index', { body: err });
     }
     else{
-      var movList = '';
+      var htmlBody = '';
       for (file in files){
-        if(config.movFileType.indexOf(path.extname(files[file])) > -1 )
-          movList += ('<a href="http://' + config.hostAddr + '/play?filename=' + files[file] + '">' + files[file] + '</a>' + '<br>');
-          }
+        if(config.movFileType.indexOf(path.extname(files[file])) > -1 ){
+          htmlBody += ('<img src="http://' + config.hostAddr + '/thumbnail?filename=' + files[file] +  '"><br>');
+          htmlBody += ('<a href="http://' + config.hostAddr + '/play?filename=' + files[file] + '">' + files[file] + '</a>' + '<br>');
+        }
       }
-      response.render('index', { body: movList });
-    });
+      response.render('index', { body: htmlBody });
+    }
+  });
 }
 
 exports.start = start;

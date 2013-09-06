@@ -21,6 +21,7 @@
   "dependencies": {
     "omxcontrol": "0.0.1",
     "express": "3.3.7",
-    "ejs": "~0.8.4"
+    "ejs": "~0.8.4",
+    "exec-sync": "~0.1.6"
   }
 }
