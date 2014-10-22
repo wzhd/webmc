@@ -31,7 +31,6 @@ serveIndex(HttpRequest req) {
 ''');
   new Directory(mediaDir).list().listen((FileSystemEntity entity) {
     try {
-      print(entity.path);
       req.response.write(
           '''<img src="http://$hostAddr/thumb?filename=${entity.path}"/><br>
               <a href="http://$hostAddr/play?filename=${entity.path}">
@@ -67,7 +66,7 @@ serveThumb(HttpRequest req) {
   }
   String path = query['filename'];
   MD5 md5 = new MD5();
-  md5.add(UTF8.encode('file://' + path));
+  md5.add(UTF8.encode( new Uri.file(path).toString()));
   var thumbFileName = thumbDir + md5.close().expand((el) {
     return [el ~/ 16, el % 16];
   }).map((el) {
@@ -89,7 +88,6 @@ serveThumb(HttpRequest req) {
 
 void main() {
   HttpServer.bind(InternetAddress.ANY_IP_V4, 8000).then((server) {
-    print('Listening at 8000');
     var router = new Router(server)
         ..serve(indexUrl, method: 'GET').listen(serveIndex)
         ..serve(playUrl, method: 'GET').listen(servePlayer)
