@@ -1,0 +1,8 @@
+name: webmc
+version: 0.0.1
+description: web media center
+author: Zihao Wang <wzhdev@gmail.com>
+dependencies:
+  http_server: any
+  route: any
+  crypto: any
