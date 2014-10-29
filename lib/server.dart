@@ -2,47 +2,31 @@ library webmc.server;
 
 import 'dart:io';
 import 'package:crypto/crypto.dart' show MD5;
-import 'dart:convert' show UTF8;
+import 'dart:convert' show UTF8, JSON;
 import 'package:route/server.dart';
 import 'package:route/url_pattern.dart';
 
-final indexUrl = new UrlPattern(r'/');
+final listUrl = new UrlPattern(r'/list');
 final playUrl = new UrlPattern(r'/play');
 final thumbUrl = new UrlPattern(r'/thumb');
 String mediaDir = '/home/wzhd/Videos/';
 String thumbDir = '/home/wzhd/.thumbnails/normal/';
 
 class Server {
-  serveIndex(HttpRequest req) {
+  serveList(HttpRequest req) {
 
-    req.response.headers.contentType = ContentType.HTML;
-    req.response.write('''<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Start - Webmc</title>
-  </head>
-  <body>
-    <header>
-    Webmc - webpage based media center
-    </header>
-    <hr>
-''');
-    new Directory(mediaDir).list().listen((FileSystemEntity entity) {
-      try {
-        req.response.write(
-            '''<img src="/thumb?filename=${entity.path}"/><br>
-              <a href="/play?filename=${entity.path}">
-              ${entity.path}
-              </a><br>''');
-      } catch (exception, stackTrace) {
-        print(exception);
-        print(stackTrace);
-      }
-    }).onDone(() {
-      req.response.write('</body></html>');
-      req.response.close();
+    var programmes = new Directory(mediaDir).listSync();
+    programmes = programmes.map((FileSystemEntity entity) {
+      String path = entity.path;
+      return {
+        'name': path,
+        'play': '/play?filename='+path,
+        'thumb': '/thumb?filename='+path
+      };
     });
+    programmes = programmes.toList();
+    req.response.write(JSON.encode(programmes));
+    req.response.close();
   }
 
   servePlayer(HttpRequest req) {
@@ -88,7 +72,7 @@ class Server {
   Server() {
     HttpServer.bind(InternetAddress.ANY_IP_V4, 8000).then((server) {
       var router = new Router(server)
-        ..serve(indexUrl, method: 'GET').listen(serveIndex)
+        ..serve(listUrl, method: 'GET').listen(serveList)
         ..serve(playUrl, method: 'GET').listen(servePlayer)
         ..serve(thumbUrl, method: 'GET').listen(serveThumb);
     });
