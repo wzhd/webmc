@@ -1,14 +1,16 @@
 <link rel="import" href="../../../../../../packages/polymer/polymer.html">
 <link rel="import" href="../programme_data/programme_data.html">
+<link rel="import" href="../programme_card/programme_card.html">
 
 <polymer-element name="programme-list">
 <template>
   <programme-data data={{programmes}}></programme-data>
   <template repeat="{{prog in programmes}}">
-    <a href="{{prog['play']}}">
-    <img src="{{prog['thumb']}}"/><br>
-    {{prog['name']}}<br><br>
-    </a>
+    <programme-card >
+      <img src="{{prog['thumb']}}" width="70" height="70">
+      <h2>{{prog['name']}}</h2>
+      <a href="{{prog['play']}}">Play</a>
+    </programme-card>
   </template>
   </template>
   <script type="application/dart" src="programme_list.dart"></script>
