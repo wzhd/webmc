@@ -6,3 +6,11 @@ dependencies:
   http_server: any
   route: any
   crypto: any
+  browser: any
+  paper_elements: any
+  polymer: any
+transformers:
+- polymer:
+    entry_points:
+      - web/index.html
+
