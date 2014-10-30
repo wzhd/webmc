@@ -1,0 +1,7 @@
+html, body {
+  font-family: 'RobotoDraft', Arial, Helvetica, sans-serif;
+  transition: opacity ease-in 0.2s;
+  height: 100%;
+  margin: 0;
+  background-color: #E5E5E5;
+}
