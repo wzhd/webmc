@@ -5,6 +5,7 @@ import 'package:crypto/crypto.dart' show MD5;
 import 'dart:convert' show UTF8, JSON;
 import 'package:route/server.dart';
 import 'package:route/url_pattern.dart';
+import 'package:http_server/http_server.dart' show VirtualDirectory;
 
 final listUrl = new UrlPattern(r'/list');
 final playUrl = new UrlPattern(r'/play');
@@ -70,11 +71,18 @@ class Server {
   }
 
   Server() {
+    final MY_HTTP_ROOT_PATH = 'web';
+    final virDir = new VirtualDirectory(MY_HTTP_ROOT_PATH)
+      ..allowDirectoryListing = true
+      ..followLinks = true
+      ..jailRoot = false;
+
     HttpServer.bind(InternetAddress.ANY_IP_V4, 8000).then((server) {
       var router = new Router(server)
         ..serve(listUrl, method: 'GET').listen(serveList)
         ..serve(playUrl, method: 'GET').listen(servePlayer)
-        ..serve(thumbUrl, method: 'GET').listen(serveThumb);
+        ..serve(thumbUrl, method: 'GET').listen(serveThumb)
+        ..defaultStream.listen(virDir.serveRequest);
     });
 
   }
