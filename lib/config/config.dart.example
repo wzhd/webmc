@@ -1,0 +1,10 @@
+library webmc.config;
+
+var config = {
+    'server': {
+        'port': 8000,
+        'directory': 'web' // Change to build/web before you pub build.
+    },
+    'mediaDir': '/home/wzhd/Videos/',
+    'thumbDir': '/home/wzhd/.thumbnails/normal/',
+};

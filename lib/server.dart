@@ -6,17 +6,20 @@ import 'dart:convert' show UTF8, JSON;
 import 'package:route/server.dart';
 import 'package:route/url_pattern.dart';
 import 'package:http_server/http_server.dart' show VirtualDirectory;
+import 'package:webmc/config/config.dart';
 
 final listUrl = new UrlPattern(r'/list');
 final playUrl = new UrlPattern(r'/play');
 final thumbUrl = new UrlPattern(r'/thumb');
-String mediaDir = '/home/wzhd/Videos/';
-String thumbDir = '/home/wzhd/.thumbnails/normal/';
 
 class Server {
+
+  String _mediaDir = config['mediaDir'];
+  String _thumbDir = config['thumbDir'];
+
   serveList(HttpRequest req) {
 
-    var programmes = new Directory(mediaDir).listSync();
+    var programmes = new Directory(_mediaDir).listSync();
     programmes = programmes.map((FileSystemEntity entity) {
       String path = entity.path;
       return {
@@ -51,7 +54,7 @@ class Server {
     String path = query['filename'];
     MD5 md5 = new MD5();
     md5.add(UTF8.encode( new Uri.file(path).toString()));
-    var thumbFileName = thumbDir + md5.close().expand((el) {
+    var thumbFileName = _thumbDir + md5.close().expand((el) {
       return [el ~/ 16, el % 16];
     }).map((el) {
       List hexDigits = ['a', 'b', 'c', 'd', 'e', 'f'];
@@ -71,13 +74,14 @@ class Server {
   }
 
   Server() {
-    final MY_HTTP_ROOT_PATH = 'web';
+    int listenPort = config['server']['port'];
+    final MY_HTTP_ROOT_PATH = config['server']['directory'];
     final virDir = new VirtualDirectory(MY_HTTP_ROOT_PATH)
       ..allowDirectoryListing = true
       ..followLinks = true
       ..jailRoot = false;
 
-    HttpServer.bind(InternetAddress.ANY_IP_V4, 8000).then((server) {
+    HttpServer.bind(InternetAddress.ANY_IP_V4, listenPort).then((server) {
       var router = new Router(server)
         ..serve(listUrl, method: 'GET').listen(serveList)
         ..serve(playUrl, method: 'GET').listen(servePlayer)
