@@ -24,8 +24,8 @@ class Server {
       String path = entity.path;
       return {
         'name': path,
-        'play': '/play?filename='+path,
-        'thumb': '/thumb?filename='+path
+        'play': '/play?filename=' + Uri.encodeQueryComponent(path),
+        'thumb': '/thumb?filename=' + Uri.encodeQueryComponent(path),
       };
     });
     programmes = programmes.toList();
